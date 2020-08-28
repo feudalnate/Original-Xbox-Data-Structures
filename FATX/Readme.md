@@ -1,4 +1,4 @@
-Some info I [posted on Reddit](https://web.archive.org/web/20200828041258/https://old.reddit.com/r/originalxbox/comments/hugrqi/hard_drive_config_area/) at some point. This is the layout of the first 64 sectors (0x800 bytes) of a Xbox hard disk
+Some info I [posted on Reddit](https://web.archive.org/web/20200828041258/https://old.reddit.com/r/originalxbox/comments/hugrqi/hard_drive_config_area/) at some point. This is the layout of the first 64 sectors (0x8000 bytes) of a Xbox hard disk
 
 |Sector Index (ranges are inclusive)|Purpose|
 |:-|:-|
