@@ -51,7 +51,7 @@ typedef struct {
 	unsigned char OnlineDnsAddress[4]; //xbl only
 	unsigned char OnlineDefaultGatewayAddress[4]; //xbl only
 	unsigned char OnlineSubnetMask[4]; //xbl only
-	unsigned int MiscFlags; //labeled like this in kernel, not sure what stores flags here but does get used
+	unsigned int MiscFlags; //used for settings that dont get their own area. so far only found "Auto power down" and "DST enabled/disabled" use this - im sure theres more
 	unsigned int DvdRegion;
 } UserConfigSection; //0x60 bytes
 
@@ -59,13 +59,14 @@ typedef struct {
 	unsigned int Checksum;
 	//labeled as reserved but does get used
 	//from what ive seen this is seemly junk data but there is probably a purpose
+	//this only seems to be used on 1.6 models
 	unsigned char Reserved1[0x32]; 
 } HardwareConfigSection; //0x36 bytes
 
 //relevant to Microsoft when they were servicing consoles
 //stores information about past error codes
 typedef struct { 
-	unsigned char LastCode;
+	unsigned char LastCode; //errors from bootloaders arent stored
 	unsigned char Reserved1;
 	unsigned short History; //not sure what of but does get used
 } UEMInformation; //0x4 bytes
@@ -351,6 +352,9 @@ Thanks to xboxdevwiki maintainers for pulling this information together into one
 #define AUDIO_FLAG_SURROUND   0x00000002
 #define AUDIO_FLAG_ENABLE_AC3 0x00010000
 #define AUDIO_FLAG_ENABLE_DTS 0x00020000
+
+#define MISC_FLAG_AUTOPOWERDOWN 0x0001
+#define MISC_FLAG_DISABLE_DST   0x0002
 
 //Rating Pending (disabled)
 #define PARENTAL_CONTROL_GAMES_RP 0x00000000

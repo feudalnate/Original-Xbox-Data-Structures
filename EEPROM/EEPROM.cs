@@ -11,7 +11,7 @@
     public ushort ThermalSensorCalibration { private set; get; }
     public byte[] Unused { private set; get; } //0x2 bytes
     public UEMInformation UEMInfo { private set; get; }
-    public byte[] Reserved1 { private set; get; } //0x2 bytes
+    public byte[] Reserved1 { private set; get; } //0x2 bytes @NOTE: seems 2 bytes MUST be left reserved at the end of the EEPROM data (bug in the chip maybe?)
 
     //quality of life
     public byte[] EncryptedEEPROM { private set; get; }
@@ -66,19 +66,22 @@
         public byte[] OnlineDnsAddress; //0x4 bytes
         public byte[] OnlineDefaultGatewayAddress; //0x4 bytes
         public byte[] OnlineSubnetMask; //0x4 bytes
-        public uint MiscFlags;
+        public uint MiscFlags; //used for settings that dont get their own area. so far only found "Auto power down" and "DST enabled/disabled" use this - im sure theres more
         public uint DvdRegion;
     }
 
     public struct HardwareConfigSection
     {
         public uint Checksum;
+        //labeled as reserved but does get used
+        //from what ive seen this is seemly junk data but there is probably a purpose
+        //this only seems to be used on 1.6 models
         public byte[] Reserved1; //0x32 bytes
     }
 
     public struct UEMInformation
     {
-        public byte LastCode;
+        public byte LastCode; //errors from bootloaders arent stored
         public byte Reserved1;
         public ushort History;
     }
