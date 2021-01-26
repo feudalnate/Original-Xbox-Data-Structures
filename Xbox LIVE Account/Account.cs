@@ -128,9 +128,12 @@
         struct ONLINE_USER_ACCOUNT_STRUCT {
             [MarshalAs (UnmanagedType.U8)]
             public ulong XUID;
-
+			
+			//reserved on memory cards: validation will fail if non-zero
+			//used for accounts stored on hard drive that are signed with the 'morphed' XboxHDKey
+			//also used for temp flags while the account is in-use and held in memory
             [MarshalAs (UnmanagedType.U4)]
-            public uint unknown; //reserved (assume PARTNER.NET accounts), verification fails if this is non-zero
+            public uint XUIDFlags;
 
             [MarshalAs (UnmanagedType.ByValArray, SizeConst = 0x10, ArraySubType = UnmanagedType.U1)]
             public char[] Gamertag; //must null term, verification fails if last byte not zero

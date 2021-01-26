@@ -56,9 +56,9 @@ typedef struct {
 } UserConfigSection; //0x60 bytes
 
 typedef struct {
-	unsigned int Checksum;
+	unsigned int Checksum; //this is not the standard XConfigChecksum like other non-encrypted sections !!NEEDS MORE RESEARCH!!
 	//labeled as reserved but does get used
-	//from what ive seen this is seemly junk data but there is probably a purpose
+	//from what ive seen this is seemly junk data but there is probably a purpose 
 	//this only seems to be used on 1.6 models
 	unsigned char Reserved1[0x32]; 
 } HardwareConfigSection; //0x36 bytes
@@ -290,6 +290,9 @@ unsigned int __stdcall XConfigChecksum(void *data, unsigned int count)
 }
 */
 
+/*
+OLD
+
 unsigned int XConfigChecksum(unsigned char* data, int count)
 {
 #define PACKUINT64(high, low) (((unsigned long long)high) << 32 | low)
@@ -307,6 +310,40 @@ unsigned int XConfigChecksum(unsigned char* data, int count)
 	}
 	return (CARRYFLAG(high, low) + (high + low));
 }
+*/
+
+unsigned int XConfigChecksum(unsigned char* data, unsigned int count)
+{
+    unsigned char* ecx; //data
+    unsigned int edx;   //count
+    unsigned int eax;   //checksum
+    unsigned int ebx;   //num. of carries (overflows)
+
+    ecx = data;
+    edx = (count >> 2);
+    eax = 0;
+    ebx = 0;
+
+    if (edx == 0)
+        goto L2;
+
+L1:
+    if (eax > (*(int*)ecx + eax))
+        ebx++;
+    eax = (*(int*)ecx + eax);
+    ecx += 4;
+    edx--;
+    if (edx > 0)
+        goto L1;
+
+L2:
+    if (eax > (eax + ebx))
+        eax = (eax + ebx) + 1;
+    else
+        eax = (eax + ebx);
+
+    return eax;
+}
 
 /* 
 Enums/flags taken from xboxdevwiki.net/EEPROM
@@ -319,6 +356,7 @@ Thanks to xboxdevwiki maintainers for pulling this information together into one
 #define GAME_REGION_NTSC_M 0x00000001
 #define GAME_REGION_NTSC_J 0x00000002
 #define GAME_REGION_PAL    0x00000004
+#define GAME_REGION_TEST   0x40000000
 #define GAME_REGION_MFG    0x80000000
 
 #define VIDEO_REGION_NONE   0x00000000

@@ -4,10 +4,9 @@
     public EncryptedSection EncryptedSettings { private set; get; }
     public FactorySection FactorySettings { private set; get; }
     public UserConfigSection UserSettings { private set; get; }
-    public HardwareConfigSection HardwareConfiguration { private set; get; }
+    public HardwareConfigSection HardwareConfiguration { private set; get; } //hardware config section is only used on 1.6(b) revision, else zeroed
     //you would think these ↓ should be in the hardware config section but they are not according to the kernel
     //and thats why when any of these have values that the checksum of the hardware config is still zero
-    //(hardware config goes seemingly unused (untouched in kernel code), maybe they had plans for it but didnt go through with it)
     public ushort ThermalSensorCalibration { private set; get; }
     public byte[] Unused { private set; get; } //0x2 bytes
     public UEMInformation UEMInfo { private set; get; }
@@ -72,7 +71,7 @@
 
     public struct HardwareConfigSection
     {
-        public uint Checksum;
+        public uint Checksum; //this is not the standard XConfigChecksum like other non-encrypted sections !!NEEDS MORE RESEARCH!!
         //labeled as reserved but does get used
         //from what ive seen this is seemly junk data but there is probably a purpose
         //this only seems to be used on 1.6 models

@@ -12,7 +12,7 @@ unsigned int __stdcall XConfigChecksum(void *data, unsigned int count)
 {
 	__asm
 	{
-		push ebp               //store last base pointer for returning to caller
+        push ebp               //store last base pointer for returning to caller
         mov ebp, esp           //store current stack pointer as our base pointer
         push ebx               //store return value address
         mov ecx, [ebp+data]    //store 'data' pointer value
@@ -77,4 +77,40 @@ unsigned long XConfigChecksum(unsigned char* data, int count)
     if (value > 0xFFFFFFFF) overflows++;
     result = (unsigned long)value;
     return (result + overflows);
+}
+
+//FINAL FINAL function
+//no casting, tried to keep within bounds of 8086 registers
+//easily portable to other languages
+unsigned int XConfigChecksum(unsigned char* data, unsigned int count)
+{
+    unsigned char* ecx; //data
+    unsigned int edx;   //count
+    unsigned int eax;   //checksum
+    unsigned int ebx;   //num. of carries (overflows)
+
+    ecx = data;
+    edx = (count >> 2);
+    eax = 0;
+    ebx = 0;
+
+    if (edx == 0)
+        goto L2;
+
+L1:
+    if (eax > (*(int*)ecx + eax))
+        ebx++;
+    eax = (*(int*)ecx + eax);
+    ecx += 4;
+    edx--;
+    if (edx > 0)
+        goto L1;
+
+L2:
+    if (eax > (eax + ebx))
+        eax = (eax + ebx) + 1;
+    else
+        eax = (eax + ebx);
+
+    return eax;
 }
