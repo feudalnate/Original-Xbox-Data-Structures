@@ -5,8 +5,8 @@
     public FactorySection FactorySettings { private set; get; }
     public UserConfigSection UserSettings { private set; get; }
     public HardwareConfigSection HardwareConfiguration { private set; get; } //hardware config section is only used on 1.6(b) revision, else zeroed
-    //you would think these ↓ should be in the hardware config section but they are not according to the kernel
-    //and thats why when any of these have values that the checksum of the hardware config is still zero
+                                                                             //you would think these ↓ should be in the hardware config section but they are not according to the kernel
+                                                                             //and thats why when any of these have values that the checksum of the hardware config is still zero
     public ushort ThermalSensorCalibration { private set; get; }
     public byte[] Unused { private set; get; } //0x2 bytes
     public UEMInformation UEMInfo { private set; get; }
@@ -69,13 +69,32 @@
         public uint DvdRegion;
     }
 
-    public struct HardwareConfigSection
+    /*
+    this section is used only on 1.6 and 1.6b models
+    1.6 and 1.6b each have different data, all 1.6 models share the same section data
+
+    for example my 1.6 EEPROM will have the same hw section data as your 1.6 console
+    but neither of our hw sections will be the same as someone with a 1.6b model and vise-versa
+
+    1.6/1.6b hw section data is unique for each model
+
+    there is no checksum on this data!
+
+    this data has something to do with the disc drive judging from the naming of types
+
+    labeled "XBOX_HW_EE_SETTINGS" in kernel, this section only seems to declared in kernels that support 1.6 models else labeled reserved
+    */
+    public struct HardwareConfigSection //0x36 bytes
     {
-        public uint Checksum; //this is not the standard XConfigChecksum like other non-encrypted sections !!NEEDS MORE RESEARCH!!
-        //labeled as reserved but does get used
-        //from what ive seen this is seemly junk data but there is probably a purpose
-        //this only seems to be used on 1.6 models
-        public byte[] Reserved1; //0x32 bytes
+        public byte FbioDelay;
+        public byte AddrDrv;
+        public byte CTrim2;
+        public byte EMRS;
+        public byte[] ExtSlow; //0xA bytes
+        public byte[] Slow;    //0xA bytes
+        public byte[] Typical; //0xA bytes
+        public byte[] Fast;    //0xA bytes
+        public byte[] ExtFast; //0xA bytes
     }
 
     public struct UEMInformation
@@ -182,8 +201,15 @@
                 //HardwareConfiguration
                 EEPROM.HardwareConfiguration = new HardwareConfigSection
                 {
-                    Checksum = stream.ReadUInt32(),
-                    Reserved1 = stream.ReadBytes(0x32)
+                    FbioDelay = stream.ReadByte(),
+                    AddrDrv = stream.ReadByte(),
+                    CTrim2 = stream.ReadByte(),
+                    EMRS = stream.ReadByte(),
+                    ExtSlow = stream.ReadBytes(10),
+                    Slow = stream.ReadBytes(10),
+                    Typical = stream.ReadBytes(10),
+                    Fast = stream.ReadBytes(10),
+                    ExtFast = stream.ReadBytes(10)
                 };
 
                 //unsectioned/extended data

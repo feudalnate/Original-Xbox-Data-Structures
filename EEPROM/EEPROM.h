@@ -55,12 +55,31 @@ typedef struct {
 	unsigned int DvdRegion;
 } UserConfigSection; //0x60 bytes
 
+/*
+this section is used only on 1.6 and 1.6b models
+1.6 and 1.6b each have different data, all 1.6 models share the same section data
+
+for example my 1.6 EEPROM will have the same hw section data as your 1.6 console
+but neither of our hw sections will be the same as someone with a 1.6b model and vise-versa
+
+1.6/1.6b hw section data is unique for each model
+
+there is no checksum on this data!
+
+this data has something to do with the disc drive judging from the naming of types
+
+labeled "XBOX_HW_EE_SETTINGS" in kernel, this section only seems to declared in kernels that support 1.6 models else labeled reserved
+*/
 typedef struct {
-	unsigned int Checksum; //this is not the standard XConfigChecksum like other non-encrypted sections !!NEEDS MORE RESEARCH!!
-	//labeled as reserved but does get used
-	//from what ive seen this is seemly junk data but there is probably a purpose 
-	//this only seems to be used on 1.6 models
-	unsigned char Reserved1[0x32]; 
+	unsigned char FbioDelay;
+	unsigned char AddrDrv;
+	unsigned char CTrim2;
+	unsigned char EMRS;
+	unsigned char ExtSlow[10];
+	unsigned char Slow[10];
+	unsigned char Typical[10];
+	unsigned char Fast[10];
+	unsigned char ExtFast[10];
 } HardwareConfigSection; //0x36 bytes
 
 //relevant to Microsoft when they were servicing consoles
