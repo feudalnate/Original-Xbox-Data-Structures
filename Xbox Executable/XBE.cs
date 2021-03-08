@@ -73,13 +73,13 @@ public struct XBE_CERTIFICATE
 
     Version 2 certificates include an extra field for additional signature keys which are used in conjuction with the alternate title ids
     (ex: if titleid[3] then use signaturekey[3])
-	@NOTE: the purpose of multiple titleid/signature key fields could be to support multi-disc games or games that carry forward saves from a previous game (like mass effect did on Xbox 360) - not entirely sure for Microsofts reasoning
+    @NOTE: the purpose of multiple titleid/signature key fields could be to support multi-disc games or games that carry forward saves from a previous game (like mass effect did on Xbox 360) - not entirely sure for Microsofts reasoning
 
     Version 3 certificates include some extra fields:
     OriginalSizeOfCertificate (assume this was for when games were re-released and certs were upgraded? GOTY kind of games?)
     OnlineServiceName (for distinguishing between passport.net/partner.net?)
-	RuntimeSecurityFlags (not sure, haven't seen a cert with this filled in)
-	CodeEncryptionKey (not sure, haven't seen a cert with this filled in)
+    RuntimeSecurityFlags (not sure, haven't seen a cert with this filled in)
+    CodeEncryptionKey (not sure, haven't seen a cert with this filled in)
     */
     public uint SizeOfCertificate;
     public uint TimeStamp; //unix time
@@ -100,8 +100,8 @@ public struct XBE_CERTIFICATE
     //v3 certificates
     public uint OriginalSizeOfCertificate;
     public uint OnlineServiceName; //"PART" or "PASS"
-	public uint RuntimeSecurityFlags;
-	public byte[] CodeEncryptionKey; //0x10 bytes
+    public uint RuntimeSecurityFlags;
+    public byte[] CodeEncryptionKey; //0x10 bytes
 }
 
 public struct IMAGE_IMPORT_BY_NAME //win32 import format
@@ -194,5 +194,5 @@ public struct XBE_HEADER
     public uint XapiLibraryVersion; //memory address of XAPI version library struct
     public uint MicrosoftLogo; //memory address of the Microsoft logo
     public uint SizeOfMicrosoftLogo;
-	//certificate follows (not part of header)
+    //certificate follows (not part of header)
 }

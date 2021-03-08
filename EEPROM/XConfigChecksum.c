@@ -98,9 +98,9 @@ unsigned int XConfigChecksum(unsigned char* data, unsigned int count)
         goto L2;
 
 L1:
-    if (eax > (*(int*)ecx + eax))
+    if (eax > (*(unsigned int*)ecx + eax))
         ebx++;
-    eax = (*(int*)ecx + eax);
+    eax = (*(unsigned int*)ecx + eax);
     ecx += 4;
     edx--;
     if (edx > 0)
