@@ -66,7 +66,7 @@ but neither of our hw sections will be the same as someone with a 1.6b model and
 
 there is no checksum on this data!
 
-this data has something to do with the disc drive judging from the naming of types
+this section contains drive/slew parameters for RAM clock/timings!
 
 labeled "XBOX_HW_EE_SETTINGS" in kernel, this section only seems to declared in kernels that support 1.6 models else labeled reserved
 */
