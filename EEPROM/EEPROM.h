@@ -281,7 +281,7 @@ unsigned int __stdcall XConfigChecksum(void *data, unsigned int count)
 {
 	__asm
 	{
-		push ebp               //store last base pointer for returning to caller
+	push ebp               //store last base pointer for returning to caller
         mov ebp, esp           //store current stack pointer as our base pointer
         push ebx               //store return value address
         mov ecx, [ebp+data]    //store 'data' pointer value
@@ -347,9 +347,9 @@ unsigned int XConfigChecksum(unsigned char* data, unsigned int count)
         goto L2;
 
 L1:
-    if (eax > (*(int*)ecx + eax))
+    if (eax > (*(unsigned int*)ecx + eax))
         ebx++;
-    eax = (*(int*)ecx + eax);
+    eax = (*(unsigned int*)ecx + eax);
     ecx += 4;
     edx--;
     if (edx > 0)
@@ -375,7 +375,7 @@ Thanks to xboxdevwiki maintainers for pulling this information together into one
 #define GAME_REGION_NTSC_M 0x00000001
 #define GAME_REGION_NTSC_J 0x00000002
 #define GAME_REGION_PAL    0x00000004
-#define GAME_REGION_TEST   0x40000000
+#define GAME_REGION_TEST   0x40000000 //only present in later kernels, never seen this used
 #define GAME_REGION_MFG    0x80000000
 
 #define VIDEO_REGION_NONE   0x00000000
