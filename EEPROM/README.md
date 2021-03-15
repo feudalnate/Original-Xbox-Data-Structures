@@ -106,8 +106,8 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 | Time Zone Standard Name | 0x68 | 0x4 | ASCII | **User** | User set time zone (e.g.: PST, CST, EST, etc.). Fixed size, null-trimmed | Yes |
 | Time Zone Daylight Name | 0x6C | 0x4 | ASCII | **User** | User set daylight savings time zone (e.g.: PDT, CDT, EDT, etc.). Fixed size, null-trimmed. Calculated when a user sets a timezone and used when daylight savings is enabled | No |
 | Reserved | 0x70 | 0x8 | byte[] | **User** | Unused | No |
-| Time Zone Standard Date | 0x78 | 0x4 | struct | **User** | User set date. *See TimeZoneDate structure below* | Yes |
-| Time Zone Daylight Date | 0x7C | 0x4 | struct | **User** | User set daylight savings date. Calculated when a user sets the date and used when daylight savings is enabled. *See TimeZoneDate structure below* | No |
+| Time Zone Standard Date | 0x78 | 0x4 | struct | **User** | User set date. *See [Time Zone Date structure](#time-zone-date-structure)* | Yes |
+| Time Zone Daylight Date | 0x7C | 0x4 | struct | **User** | User set daylight savings date. Calculated when a user sets the date and used when daylight savings is enabled. *See [Time Zone Date structure](#time-zone-date-structure)* | No |
 | Reserved | 0x80 | 0x8 | byte[] | **User** | Unused | No |
 | Time Zone Standard Bias | 0x88 | 0x4 | int32 | **User** | Time zone standard bias calculated from user selected "Time Zone Standard Name" value. Value copied to "Time Zone Bias" when daylight savings is disabled | No |
 | Time Zone Daylight Bias | 0x8C | 0x4 | int32 | **User** | Time zone daylight savings bias calculated from "Time Zone Daylight Name" value. Value copied to "Time Zone Bias" when daylight savings is enabled | No |
@@ -134,7 +134,7 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 | Extended Fast | 0xEC | 0xA | byte[] | **Hardware** | Unknown | No |
 | Thermal Sensor Calibration | 0xF6 | 0x2 | int16 | **Unsectioned** | Unknown | No |
 | Unused | 0xF8 | 0x2 | byte[] | **Unsectioned** | Unknown. Despite the name, does get used | No |
-| UEM Information | 0xFA | 0x4 | struct | **Unsectioned** | [Fatal error code](https://web.archive.org/web/20210313220229/https://xboxdevwiki.net/Fatal_Error) history. Only stores errors triggered by the system kernel. ["Service required"](https://i.imgur.com/VFtudiJ.jpg) error codes (5-21) | No |
+| UEM Information | 0xFA | 0x4 | struct | **Unsectioned** | [Fatal error code](https://web.archive.org/web/20210313220229/https://xboxdevwiki.net/Fatal_Error) history. Only stores errors triggered by the system kernel. ["Service required"](https://i.imgur.com/VFtudiJ.jpg) error codes (5-21). *See [UEM Information structure](#uem-information-structure)* | No |
 | Reserved | 0xFE | 0x2 | byte[] | **Unsectioned** | Unused | No |
 
 > #### NOTE: Hardware section<br/><br/>
