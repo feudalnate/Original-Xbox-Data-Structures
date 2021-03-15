@@ -316,7 +316,7 @@ EEPROM data is secured and validated by 2 cryptographic algorithms and 1 non-cry
 
 - [RC4 encryption algorithm](https://en.wikipedia.org/wiki/RC4)
 - [HMAC](https://en.wikipedia.org/wiki/HMAC) [SHA-1 hash algorithm](https://en.wikipedia.org/wiki/SHA-1)
-- XConfigChecksum checksum algorithm
+- [XConfigChecksum](#xconfigchecksum) checksum algorithm
 
 The **Encrypted Factory** section is hashed using HMAC SHA-1 and the resulting hash value is stored in the **Encrypted Factory** section "Checksum" field. The ["XboxEEPROMKey"](https://web.archive.org/web/20210314032018/https://xboxdevwiki.net/Kernel/XboxEEPROMKey) is used as the key for HMAC SHA-1 hashing of the **Encrypted Factory** section.
 The XboxEEPROMKey is stored in the second-stage bootloader (2BL), passed to the kernel on kernel initialization, and stored in memory until the Xbox is powered off. This key is 0x10 bytes in length and is publicly exported by the kernel.
