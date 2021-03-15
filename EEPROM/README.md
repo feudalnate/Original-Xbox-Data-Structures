@@ -134,7 +134,7 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 | Extended Fast | 0xEC | 0xA | byte[] | **Hardware** | Unknown | No |
 | Thermal Sensor Calibration | 0xF6 | 0x2 | int16 | **Unsectioned** | Unknown | No |
 | Unused | 0xF8 | 0x2 | byte[] | **Unsectioned** | Unknown. Despite the name, does get used | No |
-| UEM Information | 0xFA | 0x4 | struct | **Unsectioned** | [Fatal error code](https://web.archive.org/web/20210313220229/https://xboxdevwiki.net/Fatal_Error) history. Only stores errors triggered by the system kernel. ["Service required"](https://i.imgur.com/VFtudiJ.jpg) error codes (5-21). *See [UEM Information structure](#uem-information-structure)* | No |
+| UEM Information | 0xFA | 0x4 | struct | **Unsectioned** | Universal Error Message. [Fatal error code](https://web.archive.org/web/20210313220229/https://xboxdevwiki.net/Fatal_Error) history. Only stores errors triggered by the system kernel. ["Service required"](https://i.imgur.com/VFtudiJ.jpg) error codes (5-21). *See [UEM Information structure](#uem-information-structure)* | No |
 | Reserved | 0xFE | 0x2 | byte[] | **Unsectioned** | Unused | No |
 
 > #### NOTE: Hardware section<br/><br/>
