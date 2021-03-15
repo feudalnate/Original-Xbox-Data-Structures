@@ -142,7 +142,7 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 > **This section only exists on 1.6 (Samsung SDRAM) and 1.6B (Hynix SDRAM) revision motherboards.** Prior revision motherboards have this section of the EEPROM reserved.<br/><br/>
 > This section is read by the second-stage bootloader (2BL) and passed to the nVidia [NV2A](https://web.archive.org/web/20210313210231/https://xboxdevwiki.net/NV2A) GPU/Northbridge BIOS.<br/><br/>
 > The data contained in the hardware section is static and **revision specific**. All 1.6 revisions share one datatable and all 1.6B revisions share another.<br/><br/>
-> Prior revision motherboards have this datatable hard-coded into the system BIOS image. It is unknown to the author why this is not the case for 1.6/1.6B revisions as well. Perhaps the change in the GPU model to "XGPU-B" on 1.6/1.6B revisions made this necessary.
+> Prior revision motherboards have this datatable hard-coded into the system BIOS image. It is unknown to the author why this is not the case for 1.6/1.6B revisions as well. Perhaps the change in the GPU model to "XGPU-B" on 1.6/1.6B revisions or uncertainty of SDRAM manufacturer supply made this necessary. The rationality of this change from prior revisions of motherboards can only be speculated.
 
 
 #### Time Zone Date structure
