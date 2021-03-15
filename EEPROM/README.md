@@ -2,7 +2,7 @@
 
 ### Table of Contents
 - [What is an EEPROM?](#what-is-an-eeprom)
-- [The Purposed of the EEPROM](#the-purpose-of-the-eeprom)
+- [The Purpose of the EEPROM](#the-purpose-of-the-eeprom)
 - [Physical Location and Addresses](#physical-location-and-addresses)
 - [EEPROM Devices](#eeprom-devices)
 - [EEPROM Data Structure](#eeprom-data-structure)
