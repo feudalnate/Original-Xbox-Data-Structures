@@ -104,7 +104,7 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 | Checksum | 0x60 | 0x4 | uint32 | **User** | XConfigChecksum checksum of **User** section | No |
 | Time Zone Bias | 0x64 | 0x4 | int32 | **User** | Time zone bias currently in use (in minutes). Calculated when a user sets a time zone, based on whether daylight savings is enabled or not | No |
 | Time Zone Standard Name | 0x68 | 0x4 | ASCII | **User** | User set time zone (e.g.: PST, CST, EST, etc.). Fixed size, null-trimmed | Yes |
-| Time Zone Daylight Name | 0x6C | 0x4 | ASCII | **User** | User set daylight savings time zone (e.g.: PDT, CDT, EDT, etc.). Fixed fixed, null-trimmed. Calculated when a user sets a timezone and used when daylight savings is enabled | No |
+| Time Zone Daylight Name | 0x6C | 0x4 | ASCII | **User** | User set daylight savings time zone (e.g.: PDT, CDT, EDT, etc.). Fixed size, null-trimmed. Calculated when a user sets a timezone and used when daylight savings is enabled | No |
 | Reserved | 0x70 | 0x8 | byte[] | **User** | Unused | No |
 | Time Zone Standard Date | 0x78 | 0x4 | struct | **User** | User set date. *See TimeZoneDate structure below* | Yes |
 | Time Zone Daylight Date | 0x7C | 0x4 | struct | **User** | User set daylight savings date. Calculated when a user sets the date and used when daylight savings is enabled. *See TimeZoneDate structure below* | No |
