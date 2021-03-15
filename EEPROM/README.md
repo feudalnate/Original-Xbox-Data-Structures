@@ -90,18 +90,18 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 #### EEPROM Layout
 | Name | Offset | Length | Type | Section | Comment | User Configurable |
 |-|-|-|-|-|-|-|
-| Checksum | 0x00 | 0x14 | byte[] | **Factory Encrypted** | HMAC SHA-1 hash of the **Factory Encrypted** section | No |
+| Checksum | 0x00 | 0x14 | byte[] | **Factory Encrypted** | HMAC SHA-1 hash of the **Factory Encrypted** section. *See [Encryption, Hashing, and Checksums](#encryption-hashing-and-checksums)* | No |
 | Confounder | 0x14 | 0x8 | byte[] | **Factory Encrypted**| Used for further obfuscation in RC4 encryption of the **Factory Encrypted** section. Static value based on motherboard revision | No |
 | XboxHDKey | 0x1C | 0x10 | byte[] | **Factory Encrypted** | Key used for many purposes throughout the system such as generating signing keys for various types of content and most notably, generating the hard drive locking password | No |
-| Game Region | 0x2C | 0x4 | BitFlags | **Factory Encrypted** | Game region lock setting | No |
-| Checksum | 0x30 | 0x4 | uint32 | **Factory** | XConfigChecksum checksum of **Factory** section | No |
+| Game Region | 0x2C | 0x4 | BitFlags | **Factory Encrypted** | Game region lock setting. *See [Game Region Flags](#game-region-flags)* | No |
+| Checksum | 0x30 | 0x4 | uint32 | **Factory** | [XConfigChecksum](#xconfigchecksum) checksum of **Factory** section | No |
 | Serial Number | 0x34 | 0xC | ASCII | **Factory** | Manufacuring set serial number of the console. Fixed size | No |
 | MAC Address | 0x40 | 0x6 | byte[] | **Factory** | Manufacuring set MAC address for ethernet adapter. User set MAC address is stored in ["config" sector](https://web.archive.org/web/20210313200534/https://xboxdevwiki.net/Config_Sector) of hard drive | No |
 | Reserved | 0x46 | 0x2 | byte[] | **Factory** | Unused | No |
 | Online Key | 0x48 | 0x10 | byte[] | **Factory** | Manufacturing set key for generating Xbox LIVE session keys for matchmaking and peer-to-peer connections | No |
-| Video Standard | 0x58 | 0x4 | BitFlags | **Factory** | Manufacturing set video standard (ex: PAL-I video mode + 50hz refresh rate). Video Standard can be changed without the need for changing the Game Region | No |
+| Video Standard | 0x58 | 0x4 | BitFlags | **Factory** | Manufacturing set video standard (ex: PAL-I video mode + 50hz refresh rate). Video Standard can be changed without the need for changing the Game Region. *See [Video Standard Flags](#video-standard-flags)* | No |
 | Reserved | 0x5C | 0x4 | byte[] | **Factory** | Unused | No |
-| Checksum | 0x60 | 0x4 | uint32 | **User** | XConfigChecksum checksum of **User** section | No |
+| Checksum | 0x60 | 0x4 | uint32 | **User** | [XConfigChecksum](#xconfigchecksum) checksum of **User** section | No |
 | Time Zone Bias | 0x64 | 0x4 | int32 | **User** | Time zone bias currently in use (in minutes). Calculated when a user sets a time zone, based on whether daylight savings is enabled or not | No |
 | Time Zone Standard Name | 0x68 | 0x4 | ASCII | **User** | User set time zone (e.g.: PST, CST, EST, etc.). Fixed size, null-trimmed | Yes |
 | Time Zone Daylight Name | 0x6C | 0x4 | ASCII | **User** | User set daylight savings time zone (e.g.: PDT, CDT, EDT, etc.). Fixed size, null-trimmed. Calculated when a user sets a timezone and used when daylight savings is enabled | No |
@@ -111,18 +111,18 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 | Reserved | 0x80 | 0x8 | byte[] | **User** | Unused | No |
 | Time Zone Standard Bias | 0x88 | 0x4 | int32 | **User** | Time zone standard bias calculated from user selected "Time Zone Standard Name" value. Value copied to "Time Zone Bias" when daylight savings is disabled | No |
 | Time Zone Daylight Bias | 0x8C | 0x4 | int32 | **User** | Time zone daylight savings bias calculated from "Time Zone Daylight Name" value. Value copied to "Time Zone Bias" when daylight savings is enabled | No |
-| Language | 0x90 | 0x4 | BitFlags | **User** | User set system language | Yes |
-| Video Flags | 0x94 | 0x4 | BitFlags | **User** | User set video settings (720p, 1080i, widescreen, letterbox, etc.) | Yes |
-| Audio Flags | 0x98 | 0x4 | BitFlags | **User** | User set audio settings (stereo, surround, Dolby Digital, etc.) | Yes |
-| Game Rating Parental Control | 0x9C | 0x4 | BitFlags | **User** | Parental control setting for game rating limit | Yes |
-| Parental Control Password | 0xA0 | 0x4 | uint32 | **User** | Bitpacked button values. Only uint16 worth of data is stored | Yes |
-| Movie Rating Parental Control | 0xA4 | 0x4 | BitFlags | **User** | Parental control setting for movie (DVD) rating limit | Yes |
+| Language | 0x90 | 0x4 | BitFlags | **User** | User set system language. *See [Language Flags](#language-flags)* | Yes |
+| Video Flags | 0x94 | 0x4 | BitFlags | **User** | User set video settings (720p, 1080i, widescreen, letterbox, etc.). *See [Video Flags](#video-flags)* | Yes |
+| Audio Flags | 0x98 | 0x4 | BitFlags | **User** | User set audio settings (stereo, surround, Dolby Digital, etc.). *See [Audio Flags](#audio-flags)* | Yes |
+| Game Rating Parental Control | 0x9C | 0x4 | BitFlags | **User** | Parental control setting for game rating limit. *See [Parental Control (Games) Flags](#parental-control-games-flags)* | Yes |
+| Parental Control Password | 0xA0 | 0x4 | uint32 | **User** | Bitpacked button values. Only uint16 worth of data is stored. *See [Parental Control Password (Button) Flags](#parental-control-password-button-flags)* | Yes |
+| Movie Rating Parental Control | 0xA4 | 0x4 | BitFlags | **User** | Parental control setting for movie (DVD) rating limit. *See [Parental Control (Movies) Flags](#parental-control-movies-flags)* | Yes |
 | Online IP Address | 0xA8 | 0x4 | byte[] | **User** | *Deprecated* - User set static IPV4 address, 1 octet stored per byte.  Moved to ["config" sector](https://web.archive.org/web/20210313200534/https://xboxdevwiki.net/Config_Sector) of hard drive before retail release of the Xbox | No |
 | Online DNS Address | 0xAC | 0x4 | byte[] | **User** | *Deprecated* - User set static DNS address, 1 octet stored per byte.  Moved to ["config" sector](https://web.archive.org/web/20210313200534/https://xboxdevwiki.net/Config_Sector) of hard drive before retail release of the Xbox | No |
 | Online Default Gateway Address | 0xB0 | 0x4 | byte[] | **User** | *Deprecated* - User set static default gateway address, 1 octet stored per byte.  Moved to ["config" sector](https://web.archive.org/web/20210313200534/https://xboxdevwiki.net/Config_Sector) of hard drive before retail release of the Xbox | No |
 | Online Subnet Mask | 0xB4 | 0x4 | byte[] | **User** | *Deprecated* - User set static subnet mask, 1 octet stored per byte.  Moved to ["config" sector](https://web.archive.org/web/20210313200534/https://xboxdevwiki.net/Config_Sector) of hard drive before retail release of the Xbox | No |
-| Misc. Flags | 0xB8 | 0x4 | BitFlags | **User** | Stores various settings that don't get their own area (daylight savings enabled, auto-shutdown enabled, etc.) | Yes |
-| DVD Region | 0xBC | 0x4 | BitFlags | **User** | DVD region lock setting. It is unknown how this value is initially set, either during manufacting or through software such as the DVD playback software stored on the [Xbox DVD Playback Kit](https://web.archive.org/web/20210314022429/https://xboxdevwiki.net/Xbox_DVD_Movie_Playback_Kit) dongle | No |
+| Misc. Flags | 0xB8 | 0x4 | BitFlags | **User** | Stores various settings that don't get their own area (daylight savings enabled, auto-shutdown enabled, etc.). *See [Misc. Flags](#misc-flags)* | Yes |
+| DVD Region | 0xBC | 0x4 | BitFlags | **User** | DVD region lock setting. It is unknown how this value is initially set, either during manufacting or through software such as the DVD playback software stored on the [Xbox DVD Playback Kit](https://web.archive.org/web/20210314022429/https://xboxdevwiki.net/Xbox_DVD_Movie_Playback_Kit) dongle. *See [DVD Region Flags](#dvd-region-flags)* | No |
 | FBIO Delay | 0xC0 | 0x1 | byte | **Hardware** | Unknown | No |
 | Address Drive | 0xC1 | 0x1 | byte | **Hardware** | Unknown | No |
 | Clock Trim 2 | 0xC2 | 0x1 | byte | **Hardware** | Unknown | No |
