@@ -361,7 +361,7 @@ XCryptRC4Key(&RC4Context, 0x14, Key);
 //encrypt the Encrypted Factory section data with RC4
 XCryptRC4Crypt(&RC4Context, 0x1C, &EncryptedFactorySection[0x14]);
 
-//store "Checksum" value in **Encrypted Factory** section ...
+//store "Checksum" value in Encrypted Factory section ...
 ```
 
 When decrypting the **Encrypted Factory** section, the "Checksum" field value is hashed using HMAC SHA-1, once again using the XboxEEPROMKey as the key. The resulting hash is used as the key for RC4 decryption.
@@ -382,10 +382,10 @@ XCryptHMAC(XboxEEPROMKey, 0x10, &EncryptedFactorySection[0x14], 0x1C, 0, 0, Temp
 
 //compare temporary hash to stored "Checksum" value
 if (memcmp(TemporaryHash, Checksum) == 0) {
-  //decryption was successful and Encryption Factory section is validated ...
+  //decryption was successful and Encrypted Factory section is validated ...
 }
 else {
-  //decryption failed or Encryption Factory section is invalid ...
+  //decryption failed or Encrypted Factory section is invalid ...
 }
 ```
 
