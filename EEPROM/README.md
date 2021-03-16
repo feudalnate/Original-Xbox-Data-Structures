@@ -162,7 +162,7 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 | Reserved | 0x1 | 0x1 | byte | Unused |
 | History | 0x2 | 0x2 | uint16 | Bitpacked value storing history of past error codes. When "Last Code" is updated, this value is updated as well. |
 ```C
-History = (History | (1 << (LastError - 5))
+History = (History | (1 << (LastCode - 5))
 ```
 
 #### Game Region Flags
