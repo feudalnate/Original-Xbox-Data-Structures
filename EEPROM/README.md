@@ -55,7 +55,9 @@ Physically, the EEPROM is connected to the [System Management Bus (SMBus)](https
 #define EEPROM_HARDWARE_ADDRESS 0x54
 #define EEPROM_SOFTWARE_ADDRESS (EEPROM_HARDWARE_ADDRESS << 1)
 ```
- 
+
+---
+
 ### EEPROM Devices
 Many different models and manufacturers were used as a source for EEPROM devices on the Xbox, all of which were more-or-less the same. All EEPROM devices on the Xbox have a storage capability of 2048 bits (256 bytes) with 8 byte paging alignment. **_It is unknown to the author if the [pinout](https://en.wikipedia.org/wiki/Pinout) of the various EEPROM devices on the Xbox is shared between models of EEPROM and Xbox motherboard revisions but it is assumed._**
 
@@ -159,7 +161,9 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 | Last Code | 0x0 | 0x1 | byte | Literal value of last error code. Only stores errors triggered by the system kernel. (5-21) |
 | Reserved | 0x1 | 0x1 | byte | Unused |
 | History | 0x2 | 0x2 | uint16 | Bitpacked value storing history of past error codes. When "Last Code" is updated, this value is updated as well. |
-> History = (History | (1 << (Last Error - 5))
+```C
+History = (History | (1 << (LastError - 5))
+```
 
 #### Game Region Flags
 ```C
@@ -398,7 +402,7 @@ The XConfigChecksum is used to validate the **Factory** and **User** sections of
 The algorithm is very simple:
 
 - Iterate over the input buffer, 4 bytes at a time
-  - Add the uint32 value to the sum
+  - Add the uint32 value from the current offset to the sum
     - After each addition, the [Carry Flag](https://en.wikipedia.org/wiki/Carry_flag) in the CPU's [EFLAGS register](https://en.wikipedia.org/wiki/FLAGS_register) is checked
       - If the Carry Flag is set then a [wrap around (overflow)](https://en.wikipedia.org/wiki/Integer_overflow) has occurred and the sum is incremented by 1 (despite the naming, no value is carried during calculation)
 - After the sum is calculated a bitwise NOT is applied to the result
