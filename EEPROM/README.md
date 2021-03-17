@@ -96,7 +96,7 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 | Confounder | 0x14 | 0x8 | byte[] | **Factory Encrypted**| Used for further obfuscation in RC4 encryption of the **Factory Encrypted** section. Static value based on motherboard revision | No |
 | XboxHDKey | 0x1C | 0x10 | byte[] | **Factory Encrypted** | Key used for many purposes throughout the system such as generating signing keys for various types of content and most notably, generating the hard drive locking password | No |
 | Game Region | 0x2C | 0x4 | BitFlags | **Factory Encrypted** | Game region lock setting. *See [Game Region Flags](#game-region-flags)* | No |
-| Checksum | 0x30 | 0x4 | uint32 | **Factory** | [XConfigChecksum](#xconfigchecksum) checksum of **Factory** section | No |
+| Checksum | 0x30 | 0x4 | uint32 | **Factory** | XConfigChecksum checksum of **Factory** section. *See [XConfigChecksum](#xconfigchecksum)* | No |
 | Serial Number | 0x34 | 0xC | ASCII | **Factory** | Manufacuring set serial number of the console. Fixed size | No |
 | MAC Address | 0x40 | 0x6 | byte[] | **Factory** | Manufacuring set MAC address for ethernet adapter. User set MAC address is stored in ["config" sector](https://web.archive.org/web/20210313200534/https://xboxdevwiki.net/Config_Sector) of hard drive | No |
 | Reserved | 0x46 | 0x2 | byte[] | **Factory** | Unused | No |
@@ -385,7 +385,7 @@ XCryptRC4Crypt(&RC4Context, 0x1C, &EncryptedFactorySection[0x14]);
 XCryptHMAC(XboxEEPROMKey, 0x10, &EncryptedFactorySection[0x14], 0x1C, 0, 0, TemporaryHash);
 
 //compare temporary hash to stored "Checksum" value
-if (memcmp(TemporaryHash, Checksum) == 0) {
+if (memcmp(TemporaryHash, Checksum, 0x14) == 0) {
   //decryption was successful and Encrypted Factory section is validated ...
 }
 else {
