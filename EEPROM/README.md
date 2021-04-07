@@ -103,7 +103,7 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 | Online Key | 0x48 | 0x10 | byte[] | **Factory** | Manufacturing set key for generating Xbox LIVE session keys for matchmaking and peer-to-peer connections | No |
 | Video Standard | 0x58 | 0x4 | BitFlags | **Factory** | Manufacturing set video standard (ex: PAL-I video mode + 50hz refresh rate). Video Standard can be changed without the need for changing the Game Region. *See [Video Standard Flags](#video-standard-flags)* | No |
 | Reserved | 0x5C | 0x4 | byte[] | **Factory** | Unused | No |
-| Checksum | 0x60 | 0x4 | uint32 | **User** | [XConfigChecksum](#xconfigchecksum) checksum of **User** section | No |
+| Checksum | 0x60 | 0x4 | uint32 | **User** | XConfigChecksum checksum of **User** section. *See [XConfigChecksum](#xconfigchecksum)* | No |
 | Time Zone Bias | 0x64 | 0x4 | int32 | **User** | Time zone bias currently in use (in minutes). Calculated when a user sets a time zone, based on whether daylight savings is enabled or not | No |
 | Time Zone Standard Name | 0x68 | 0x4 | ASCII | **User** | User set time zone (e.g.: PST, CST, EST, etc.). Fixed size, null-trimmed | Yes |
 | Time Zone Daylight Name | 0x6C | 0x4 | ASCII | **User** | User set daylight savings time zone (e.g.: PDT, CDT, EDT, etc.). Fixed size, null-trimmed. Calculated when a user sets a timezone and used when daylight savings is enabled | No |
