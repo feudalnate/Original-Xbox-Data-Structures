@@ -245,7 +245,12 @@ History = (History | (1 << (LastCode - 5))
 
 #### Parental Control Password (Button) Flags
 ```C
-//NOTE: Parental control password is a 32bit field but only stores a 16bit value. Passcode button values are bitpacked to uint16 as 'nibbles' (4 bits)
+/*
+  NOTE:
+  
+  Parental control password is a 32bit field but only stores a 16bit value
+  Passcode button values are bitpacked to uint16 as 'nibbles' (4 bits)
+*/
 
 #define PASSCODE_UP    0x1
 #define PASSCODE_DOWN  0x2
@@ -476,6 +481,8 @@ After "resetting" EEPROM data and power cycling the console, the user will be pr
 
 ###### Daylight Savings
 ![](https://i.imgur.com/xV5m3xN.png)
+
+---
 
 ### References and Notes
 
