@@ -128,7 +128,7 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 | FBIO Delay | 0xC0 | 0x1 | byte | **Hardware** | Unknown | No |
 | Address Drive | 0xC1 | 0x1 | byte | **Hardware** | Unknown | No |
 | Clock Trim 2 | 0xC2 | 0x1 | byte | **Hardware** | Unknown | No |
-| EMRS | 0xC3 | 0x1 | byte | **Hardware** | Unknown | No |
+| Extended Mode Register Set | 0xC3 | 0x1 | byte | **Hardware** | Unknown | No |
 | Extended Slow | 0xC4 | 0xA | byte[] | **Hardware** | Unknown | No |
 | Slow | 0xCE | 0xA | byte[] | **Hardware** | Unknown | No |
 | Typical | 0xD8 | 0xA | byte[] | **Hardware** | Unknown | No |
@@ -140,7 +140,7 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 | Reserved | 0xFE | 0x2 | byte[] | **Unsectioned** | Unused | No |
 
 > #### NOTE: Hardware section<br/><br/>
-> Hardware section contains a (partial?) [drive strength](https://www.google.com/search?q=drive+strength+in+electronics)/[slew rate](https://en.wikipedia.org/wiki/Slew_rate) calibration datatable. This has to do with the system [SDRAM](https://en.wikipedia.org/wiki/Synchronous_dynamic_random-access_memory) voltage and timing calibration.<br/><br/>
+> Hardware section contains a (partial?) [drive strength](https://www.google.com/search?q=drive+strength+in+electronics)/[slew rate](https://en.wikipedia.org/wiki/Slew_rate) calibration datatable. This has to do with the system [SDRAM](https://en.wikipedia.org/wiki/Synchronous_dynamic_random-access_memory) initialization, voltage, and timing calibration.<br/><br/>
 > **This section only exists on 1.6 (Samsung SDRAM) and 1.6B (Hynix SDRAM) revision motherboards.** Prior revision motherboards have this section of the EEPROM reserved.<br/><br/>
 > This section is read by the second-stage bootloader (2BL), passed to the nVidia [NV2A](https://web.archive.org/web/20210313210231/https://xboxdevwiki.net/NV2A) GPU/Northbridge BIOS, and immediately followed by a system memory test.<br/><br/>
 > The data contained in the hardware section is static and **revision specific**. All 1.6 revisions share one datatable and all 1.6B revisions share another.<br/><br/>
