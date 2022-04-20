@@ -64,12 +64,13 @@ public struct XBE_CERTIFICATE
     /*
     The original Xbox has had some revisioning of its executable certificate data over the years
 
-    Games shipping with the 3803 SDK and earlier use version 1 certificates. When version 3 certificates started being used is unknown (~2003?)
+    Games shipping with the 3803 SDK and earlier use version 1 certificates. Version 3 certificates were in use by mid/late 2002. When version 4 certificates started being used is unknown (~2003?)
 
     Certificate versions can be identified by the SizeOfCertificate field: 
     0xD0 for v1
     0x1D0 for v2
-    0x1EC for v3
+    0x1DC for v3
+    0x1EC for v4
 
     Version 2 certificates include an extra field for additional signature keys which are used in conjuction with the alternate title ids
     (ex: if titleid[3] then use signaturekey[3])
@@ -78,8 +79,10 @@ public struct XBE_CERTIFICATE
     Version 3 certificates include some extra fields:
     OriginalSizeOfCertificate (assume this was for when games were re-released and certs were upgraded? GOTY kind of games?)
     OnlineServiceName (for distinguishing between passport.net/partner.net?)
-    RuntimeSecurityFlags (not sure, haven't seen a cert with this filled in)
-    CodeEncryptionKey (not sure, haven't seen a cert with this filled in)
+    RuntimeSecurityFlags (have observed 0x00000001 and 0x00000002 flags set in this field. its use is unknown)
+    
+    Version 4 certificates (final cert. revision) added 1 extra field:
+    CodeEncryptionKey (v4 certs. have this filled in (assume auto-generated much like signature keys). its use is unknown)
     */
     public uint SizeOfCertificate;
     public uint TimeStamp; //unix time
@@ -101,6 +104,8 @@ public struct XBE_CERTIFICATE
     public uint OriginalSizeOfCertificate;
     public uint OnlineServiceName; //"PART" or "PASS"
     public uint RuntimeSecurityFlags;
+    
+    //v3 certificates
     public byte[] CodeEncryptionKey; //0x10 bytes
 }
 
