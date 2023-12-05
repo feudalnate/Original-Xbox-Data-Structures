@@ -125,26 +125,19 @@ uint32 ExSaveNonVolatileSetting(uint32 ValueIndex, uint32 Type, void* Value, uin
 | Online Subnet Mask | 0xB4 | 0x4 | byte[] | **User** | *Deprecated* - User set static subnet mask, 1 octet stored per byte.  Moved to ["config" sector](https://web.archive.org/web/20210313200534/https://xboxdevwiki.net/Config_Sector) of hard drive before retail release of the Xbox | No |
 | Misc. Flags | 0xB8 | 0x4 | BitFlags | **User** | Stores various settings that don't get their own area (daylight savings enabled, auto-shutdown enabled, etc.). *See [Misc. Flags](#misc-flags)* | Yes |
 | DVD Region | 0xBC | 0x4 | BitFlags | **User** | DVD region lock setting. It is unknown how this value is initially set, either during manufacting or through software such as the DVD playback software stored on the [Xbox DVD Playback Kit](https://web.archive.org/web/20210314022429/https://xboxdevwiki.net/Xbox_DVD_Movie_Playback_Kit) dongle. *See [DVD Region Flags](#dvd-region-flags)* | No |
-| FBIO Delay | 0xC0 | 0x1 | byte | **Hardware** | Unknown | No |
-| Address Drive | 0xC1 | 0x1 | byte | **Hardware** | Unknown | No |
-| Clock Trim 2 | 0xC2 | 0x1 | byte | **Hardware** | Unknown | No |
-| Extended Mode Register Set | 0xC3 | 0x1 | byte | **Hardware** | Unknown | No |
-| Extended Slow | 0xC4 | 0xA | byte[] | **Hardware** | Unknown | No |
-| Slow | 0xCE | 0xA | byte[] | **Hardware** | Unknown | No |
-| Typical | 0xD8 | 0xA | byte[] | **Hardware** | Unknown | No |
-| Fast | 0xE2 | 0xA | byte[] | **Hardware** | Unknown | No |
-| Extended Fast | 0xEC | 0xA | byte[] | **Hardware** | Unknown | No |
+| FBIO Delay | 0xC0 | 0x1 | byte | **Hardware** | Used by 1BL in 1.6-based BIOS' to initialize `NV_PBUS_FBIO_DLY` prior to further calibration by 2BL. Byte is replicated to span DWORD and used to set register. | No |
+| Address Drive | 0xC1 | 0x1 | byte | **Hardware** | Used by 1BL in 1.6-based BIOS' to initialize `NV_PBUS_FBIO_ADRDRV` prior to further calibration by 2BL. Byte is replicated to span DWORD and used to set register. | No |
+| Clock Trim 2 | 0xC2 | 0x1 | byte | **Hardware** | Used by 1BL in 1.6-based BIOS' to initialize `NV_PBUS_DEBUG_CTRIM_2` prior to further calibration by 2BL. Byte is replicated to span WORD and used to set upper 16bits of register. |  |
+| Extended Mode Register Set | 0xC3 | 0x1 | byte | **Hardware** | Used by 1BL in 1.6-based BIOS' to set drive strength mode via `NV_PEXTDEV_BOOT_0_STRAP_EMRS`. Different modes are used for Samsung vs Hynix systems. | No |
+| Extreme Fast | 0xC4 | 0xA | byte[] | **Hardware** | Packed drive/slew/delay values used by 2BL in 1.6-based BIOS' to calibrate NV2A that classify as 'Extreme Fast'. *See [Calibration Data](#calibration-data)* | No |
+| Fast | 0xCE | 0xA | byte[] | **Hardware** | Packed drive/slew/delay values used by 2BL in 1.6-based BIOS' to calibrate NV2A that classify as 'Fast'. *See [Calibration Data](#calibration-data)* | No |
+| Typical | 0xD8 | 0xA | byte[] | **Hardware** | Packed drive/slew/delay values used by 2BL in 1.6-based BIOS' to calibrate NV2A that classify as 'Typical'. *See [Calibration Data](#calibration-data)* | No |
+| Slow | 0xE2 | 0xA | byte[] | **Hardware** | Packed drive/slew/delay values used by 2BL in 1.6-based BIOS' to calibrate NV2A that classify as 'Slow'. *See [Calibration Data](#calibration-data)* | No |
+| Extreme Slow | 0xEC | 0xA | byte[] | **Hardware** | Packed drive/slew/delay values used by 2BL in 1.6-based BIOS' to calibrate NV2A that classify as 'Extreme Slow'. *See [Calibration Data](#calibration-data)* | No |
 | Thermal Sensor Calibration | 0xF6 | 0x2 | int16 | **Unsectioned** | Unknown | No |
 | Unused | 0xF8 | 0x2 | byte[] | **Unsectioned** | Unknown. Despite the name, does get used | No |
 | UEM Information | 0xFA | 0x4 | struct | **Unsectioned** | Universal Error Message. [Fatal error code](https://web.archive.org/web/20210313220229/https://xboxdevwiki.net/Fatal_Error) history. Only stores errors triggered by the system kernel. ["Service required"](https://i.imgur.com/VFtudiJ.jpg) error codes (5-21). *See [UEM Information structure](#uem-information-structure)* | No |
 | Reserved | 0xFE | 0x2 | byte[] | **Unsectioned** | Unused | No |
-
-> #### NOTE: Hardware section<br/><br/>
-> Hardware section contains a (partial?) [drive strength](https://www.google.com/search?q=drive+strength+in+electronics)/[slew rate](https://en.wikipedia.org/wiki/Slew_rate) calibration datatable. This has to do with the system [SDRAM](https://en.wikipedia.org/wiki/Synchronous_dynamic_random-access_memory) initialization, voltage, and timing calibration.<br/><br/>
-> **This section only exists on 1.6 (Samsung SDRAM) and 1.6B (Hynix SDRAM) revision motherboards.** Prior revision motherboards have this section of the EEPROM reserved.<br/><br/>
-> This section is read by the second-stage bootloader (2BL), passed to the nVidia [NV2A](https://web.archive.org/web/20210313210231/https://xboxdevwiki.net/NV2A) GPU/Northbridge BIOS, and immediately followed by a system memory test.<br/><br/>
-> The data contained in the hardware section is static and **revision specific**. All 1.6 revisions share one datatable and all 1.6B revisions share another.<br/><br/>
-> Prior revision motherboards have this datatable hard-coded into the system BIOS image. It is unknown to the author why this is not the case for 1.6/1.6B revisions as well. Perhaps the change in the GPU model to "XGPU-B" on 1.6/1.6B revisions or uncertainty of SDRAM manufacturer supply made this necessary. The rationality of this change from prior revisions of motherboards can only be speculated.
 
 
 #### Time Zone Date structure
@@ -316,6 +309,80 @@ uint32 PackPasscode(byte button1, byte button2, byte button3, byte button4)
 #define DVD_REGION_5 0x00000005 //Eastern Europe, Russia, India, Africa
 #define DVD_REGION_6 0x00000006 //China
 ```
+
+---
+
+### Hardware section
+
+On all 1.6 systems, the hardware section contains special data used to mutually refine signaling between [SDRAM](https://en.wikipedia.org/wiki/Synchronous_dynamic_random-access_memory) and the nVidia [NV2A](https://web.archive.org/web/20210313210231/https://xboxdevwiki.net/NV2A) GPU/Northbridge. This includes packed [drive strength](https://www.google.com/search?q=drive+strength+in+electronics)/[slew rate](https://en.wikipedia.org/wiki/Slew_rate) calibration datatable, and pre-calibration defaults for a few hardware registers.
+
+Prior revision motherboards have similar calibration data and RAM-specific defaults hard-coded into their TSOP-based BIOS. But as Microsoft transitioned to storing the BIOS as mask-rom in the Xyclops ASIC for the 1.6, they would lose the ability to easily update manufacturer-specific RAM tunings without spinning new Xyclops silicon.
+
+Instead, this section is read out of EEPROM by both the init-table (1BL) and second-stage bootloader (2BL) of the 5838 retail BIOS as used in all 1.6/1.6B systems. The data contained in the hardware section is static and **revision specific**. All 1.6 revisions share one datatable and all 1.6B revisions share another.
+
+Prior revision motherboards & BIOS have this section of the EEPROM reserved.
+
+#### Drive Strength Mode (EMRS)
+
+```C
+//NOTE: 1BL in 5838 translates these values to override `NV_PEXTDEV_BOOT_0_STRAP_EMRS`
+
+#define EMRS_MICRON              0x00
+#define EMRS_REDUCED_DRIVE       0x02   //Hynix setting
+#define EMRS_RESERVED            0x40
+#define EMRS_MATCHED             0x42   //Samsung setting
+```
+
+#### Calibration Data
+
+During 2BL execution, the 5838 retail BIOS reads and unpacks all five of the 10-byte drive/slew/delay tables stored in the EEPROM of 1.6 systems.
+
+The first 9 bytes of each set of packed parameters is split into nibbles. Each nibble is expanded into a byte to produce the following drive/slew struct:
+
+```c
+//NOTE: Data structure contains the drive/slew per-speed process parameters.
+
+struct _drv_slw_pad_params {
+    UCHAR AdrDrvFall;
+    UCHAR AdrDrvRise;
+    UCHAR AdrSlwFall;
+    UCHAR AdrSlwRise;
+
+    UCHAR ClkDrvFall;
+    UCHAR ClkDrvRise;
+    UCHAR ClkSlwFall;
+    UCHAR ClkSlwRise;
+
+    UCHAR DatDrvFall;
+    UCHAR DatDrvRise;
+    UCHAR DatSlwFall;
+    UCHAR DatSlwRise;
+
+    UCHAR DqsDrvFall;
+    UCHAR DqsDrvRise;
+    UCHAR DqsSlwFall;
+    UCHAR DqsSlwRise;
+
+    UCHAR DataInbDelay;
+    UCHAR ClkIcDelay;
+    UCHAR DqsInbDelay;
+} DRVSLWPADPARAMS;
+```
+
+For example, the first two bytes of the 'Extreme Fast' pad params starting at offset `0xC4` in 1.6 EEPROMs are `0x46`, `0x45`, which unpacks to:
+
+```c
+struct _drv_slw_pad_params {
+    UCHAR AdrDrvFall; // 4
+    UCHAR AdrDrvRise; // 6
+    UCHAR AdrSlwFall; // 4
+    UCHAR AdrSlwRise; // 5
+...
+```
+
+The final, 10th byte, of the packed parameters unpacks directly to `DqsInbDelay` -- the 19th and final byte of the expanded structure.
+
+After measuring internal characteristics of the NV2A (which can vary, based on heat, silicon lottery,) the 2BL will select the most applicable parameter table to calculate and apply final tunings for memory signaling.
 
 ---
 
@@ -501,8 +568,6 @@ Much of the data structuring and code based research was acquired from (software
 
 ##### Author self-notes
 - More research is required into the Misc. Flags bitflags, it is unknown if there are more. These flags are seemly based on the Xbox Dashboard offered features and there are many revisions of the Xbox Dashboard.
-
-- More research into the **Hardware** section on 1.6-1.6B revisions of the motherboard is required. The fields in this structure are much more related to hardware engineering knowledge and not programming knowledge.
 
 - More research into the "Thermal Sensor Calibration" and "Unused" fields stored in the **Unsectioned** section is required.
 
